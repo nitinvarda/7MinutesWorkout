@@ -6,4 +6,5 @@
 
     <!-- exercicse activity strings   -->
     <string name="get_ready">GET READY FOR</string>
+    <string name="upcomingTitle">UPCOMING EXERCISE</string>
 </resources>
