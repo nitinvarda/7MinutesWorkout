@@ -1,5 +1,9 @@
 package com.nitinvarda.a7minuteworkout
 
+import android.app.Dialog
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,10 +11,12 @@ import android.os.CountDownTimer
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_exercise.*
+import kotlinx.android.synthetic.main.dialog_custom_back_confirmation.*
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -48,7 +54,7 @@ class ExerciseActivity : AppCompatActivity(),TextToSpeech.OnInitListener {
         }
 
         toolbar_exercies_activity.setNavigationOnClickListener {
-            onBackPressed()
+            customDialogForBackButton()
         }
 
         tts = TextToSpeech(this,this)
@@ -129,7 +135,10 @@ class ExerciseActivity : AppCompatActivity(),TextToSpeech.OnInitListener {
                     restTitle.text = "take rest"
                     setupRestView()
                 }else{
-                    Toast.makeText(this@ExerciseActivity,"You have successfully completed Exercise",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@ExerciseActivity,"You have successfully completed Exercise",Toast.LENGTH_SHORT).show()
+                    finish()
+                    val intent = Intent(this@ExerciseActivity,FinishActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }.start()
@@ -196,5 +205,26 @@ class ExerciseActivity : AppCompatActivity(),TextToSpeech.OnInitListener {
 
         exerciseAdapter = ExerciseStatusAdapter(exercieList!!,this)
         rvExerciseStatus.adapter = exerciseAdapter
+    }
+
+    private fun  customDialogForBackButton(){
+        var customDialog = Dialog(this)
+
+        customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        customDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.WHITE))
+        customDialog.setContentView(R.layout.dialog_custom_back_confirmation)
+
+
+        customDialog.tvYes.setOnClickListener {
+            finish()
+            customDialog.dismiss()
+        }
+        customDialog.tvNo.setOnClickListener {
+            customDialog.dismiss()
+        }
+
+        customDialog.show()
+
+
     }
 }
